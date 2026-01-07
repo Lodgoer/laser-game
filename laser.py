@@ -1,6 +1,10 @@
 import turtle
 
+CANNON_STEP = 10
+
 window = turtle.Screen()
+window.tracer(0)
+
 window.setup(0.5, 0.75)
 window.bgcolor(0.2, 0.2, 0.2)
 window.title("The Real Python Space Invaders")
@@ -17,5 +21,35 @@ cannon.penup()
 cannon.color(1, 1, 1)
 cannon.shape("square")
 cannon.setposition(0, FLOOR_LEVEL)
+
+# Draw cannon
+def draw_cannon():
+    cannon.clear()
+    cannon.turtlesize(1, 4)  # Base
+    cannon.stamp()
+    cannon.sety(FLOOR_LEVEL + 10)
+    cannon.turtlesize(1, 1.5)  # Next tier
+    cannon.stamp()
+    cannon.sety(FLOOR_LEVEL + 20)
+    cannon.turtlesize(0.8, 0.3)  # Tip of cannon
+    cannon.stamp()
+    cannon.sety(FLOOR_LEVEL)
+    window.update()
+
+
+def move_left():
+    cannon.setx(cannon.xcor() - CANNON_STEP)
+    draw_cannon()
+
+def move_right():
+    cannon.setx(cannon.xcor() + CANNON_STEP)
+    draw_cannon()
+
+window.onkeypress(move_left, "Left")
+window.onkeypress(move_right, "Right")
+window.onkeypress(turtle.bye, "q")
+window.listen()
+
+draw_cannon()
 
 turtle.done()
