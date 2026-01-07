@@ -125,12 +125,14 @@ def remove_sprite(sprite, sprite_list):
 # Game loop
 alien_timer = 0
 game_timer = time.time()
+score = 0
+
 game_running = True
 while game_running:
     time_elapsed = time.time() - game_timer
     text.clear()
     text.write(
-        f"Time: {time_elapsed:5.1f}s",
+        f"Time: {time_elapsed:5.1f}s\nScore: {score:5}",
         font=("Courier", 20, "bold"),
     )
 
@@ -147,6 +149,7 @@ while True:
             if laser.distance(alien) < 20:
                 remove_sprite(laser, lasers)
                 remove_sprite(alien, aliens)
+                score += 1
                 break
     # Spawn new aliens when time interval elapsed
     if time.time() - alien_timer > ALIEN_SPAWN_INTERVAL:
