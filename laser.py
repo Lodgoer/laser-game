@@ -6,6 +6,7 @@ CANNON_STEP = 10
 LASER_LENGTH = 20
 LASER_SPEED = 10
 ALIEN_SPAWN_INTERVAL = 1.2  # Seconds
+ALIEN_SPEED = 2
 
 window = turtle.Screen()
 window.tracer(0)
@@ -106,23 +107,49 @@ window.listen()
 
 draw_cannon()
 
+def remove_sprite(sprite, sprite_list):
+    sprite.clear()
+    sprite.hideturtle()
+    window.update()
+    sprite_list.remove(sprite)
+    turtle.turtles().remove(sprite)
+
+
 # Game loop
 alien_timer = 0
+game_running = True
+while game_running:
+
 while True:
     # Move all lasers
     for laser in lasers:
         move_laser(laser)
         # Remove laser if it goes off screen
         if laser.ycor() > TOP:
-            laser.clear()
-            laser.hideturtle()
-            lasers.remove(laser)
-            turtle.turtles().remove(laser)
+            remove_sprite(laser, lasers)
+            break
+        # Check for collision with aliens
+        for alien in aliens.copy():
+            if laser.distance(alien) < 20:
+                remove_sprite(laser, lasers)
+                remove_sprite(alien, aliens)
+                break
     # Spawn new aliens when time interval elapsed
     if time.time() - alien_timer > ALIEN_SPAWN_INTERVAL:
         create_alien()
         alien_timer = time.time()
+    # Move all aliens
+    for alien in aliens:
+        alien.forward(ALIEN_SPEED)
+        # Check for game over
+        if alien.ycor() < FLOOR_LEVEL:
+            game_running = False
+            break
     window.update()
 
+splash_text = turtle.Turtle()
+splash_text.hideturtle()
+splash_text.color(1, 1, 1)
+splash_text.write("GAME OVER", font=("Courier", 40, "bold"), align="center")
 
 turtle.done()
