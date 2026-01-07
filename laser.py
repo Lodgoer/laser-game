@@ -29,6 +29,13 @@ cannon.color(1, 1, 1)
 cannon.shape("square")
 cannon.setposition(0, FLOOR_LEVEL)
 
+# Create turtle for writing text
+text = turtle.Turtle()
+text.penup()
+text.hideturtle()
+text.setposition(LEFT * 0.8, TOP * 0.8)
+text.color(1, 1, 1)
+
 lasers = []
 aliens = []
 
@@ -117,8 +124,15 @@ def remove_sprite(sprite, sprite_list):
 
 # Game loop
 alien_timer = 0
+game_timer = time.time()
 game_running = True
 while game_running:
+    time_elapsed = time.time() - game_timer
+    text.clear()
+    text.write(
+        f"Time: {time_elapsed:5.1f}s",
+        font=("Courier", 20, "bold"),
+    )
 
 while True:
     # Move all lasers
