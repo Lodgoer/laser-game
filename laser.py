@@ -128,6 +128,8 @@ score = 0
 game_running = True
 while game_running:
     timer_this_frame = time.time()
+    # Update elapsed time
+    time_elapsed = time.time() - game_timer
     text.clear()
     text.write(
         f"Time: {time_elapsed:5.1f}s\nScore: {score:5}",
@@ -140,7 +142,6 @@ while game_running:
         cannon.setx(new_x)
         draw_cannon()
 
-while True:
     # Move all lasers
     for laser in lasers:
         move_laser(laser)
@@ -169,7 +170,7 @@ while True:
     time_for_this_frame = time.time() - timer_this_frame
     if time_for_this_frame < TIME_FOR_1_FRAME:
         time.sleep(TIME_FOR_1_FRAME - time_for_this_frame)
-    
+
     window.update()
 
 splash_text = turtle.Turtle()
